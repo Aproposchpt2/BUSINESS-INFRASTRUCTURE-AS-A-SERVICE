@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /.netlify/functions/
+
+Sitemap: https://biaas.stellaruc.com/sitemap.xml
