@@ -62,7 +62,7 @@ function twilioRequest(accountSid, authToken, to, from, body) {
   });
 }
 
-const TWILIO_COMPLIANCE_FOOTER = '\nReply STOP to unsubscribe. Reply HELP for help. Msg & data rates may apply. AI4 Businesses aiflowdeskpro.com';
+const TWILIO_COMPLIANCE_FOOTER = '\nMsg frequency varies. Msg & data rates may apply. Reply STOP to opt out, HELP for help.';
 
 async function sendSms(to, body) {
   const accountSid = process.env.TWILIO_ACCOUNT_SID;
@@ -222,7 +222,7 @@ exports.handler = async (event) => {
 
   // Send SMS if consented
   if (smsConsent && phone) {
-    const smsBody = `Hi ${firstName}, your FlowDesk Pro Lead Manager demo is confirmed. Your ${businessName} branded dashboard is ready. Check your email for access details.`;
+    const smsBody = `Stellar Intelligent Software Developers: Hi ${firstName}, your Lead Manager demo is confirmed. Your ${businessName} branded dashboard is ready. Check your email for access details.`;
     const smsResult = await sendSms(phone, smsBody);
     console.log('[submit-demo-request] SMS result:', smsResult);
   }
