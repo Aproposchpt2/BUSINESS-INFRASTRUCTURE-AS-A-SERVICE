@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lead Intake — FlowDesk Pro Lead Manager</title>
-  <meta name="description" content="Fallback lead intake form for FlowDesk Pro Lead Manager." />
+  <title>Lead Intake — Stellar Lead Manager</title>
+  <meta name="description" content="Fallback lead intake form for the Stellar Lead Manager." />
   <link rel="stylesheet" href="styles.css" />
   <style>
     /* ── SMS Consent Card ── */
@@ -163,7 +163,7 @@
     <nav class="nav" aria-label="Lead Manager navigation">
       <a class="brand" href="/">
         <span class="brand-mark"><img src="lead-management-logo.png" alt="" /></span>
-        <span class="brand-text"><strong>FlowDesk Pro</strong><span>Lead Manager</span></span>
+        <span class="brand-text"><strong>Stellar</strong><span>Lead Manager</span></span>
       </a>
       <ul class="nav-links">
         <li><a href="/dashboard">Dashboard</a></li>
@@ -177,7 +177,7 @@
     <div class="demo-preview-section">
       <div class="demo-lede">
         <div class="eyebrow"><span>Live Demo</span></div>
-        <h1>See FlowDesk Pro <em>personalized for your business</em></h1>
+        <h1>See Stellar <em>personalized for your business</em></h1>
         <p>Type your business name below and watch your branded dashboard appear. Submit the form — your dashboard is ready instantly.</p>
       </div>
 
@@ -214,11 +214,11 @@
 
     <main class="form-shell">
       <section class="form-card">
-        <img class="hero-logo" src="lead-management-logo.png" alt="FlowDesk Pro Lead Manager" />
+        <img class="hero-logo" src="lead-management-logo.png" alt="Stellar Lead Manager" />
         <div class="eyebrow"><span>Start Your Free Demo</span></div>
         <h1>Your personalized dashboard is one form away.</h1>
         <p class="hero-copy">
-          Fill in your details below. The moment you submit, FlowDesk Pro builds your branded Lead Manager dashboard — with your business name at the top — ready to receive live leads.
+          Fill in your details below. The moment you submit, Stellar builds your branded Lead Manager dashboard — with your business name at the top — ready to receive live leads.
         </p>
 
         <form id="leadForm" novalidate>
@@ -244,7 +244,7 @@
             <div class="field full">
               <label for="company">Your Business Name <span style="color:var(--cyan);font-weight:400;letter-spacing:.05em;text-transform:none;font-size:.9em">— becomes your dashboard header</span></label>
               <input id="company" name="company" autocomplete="organization" placeholder="e.g. Henderson Law Group, Rivera Dental, Torres HVAC" required />
-              <span style="font-size:.74rem;color:var(--soft);letter-spacing:.04em;margin-top:2px;display:block">This name will display as the banner across your personalized FlowDesk Pro dashboard.</span>
+              <span style="font-size:.74rem;color:var(--soft);letter-spacing:.04em;margin-top:2px;display:block">This name will display as the banner across your personalized Stellar dashboard.</span>
             </div>
           </div>
 
@@ -263,15 +263,11 @@
             SMS Notification Consent
           </div>
           <p class="sms-disclosure">
-            I agree to receive SMS notifications from Stellar Intelligent Software Developers (a DBA of Apropos Group LLC) about inbound calls, leads, and
-            account activity at the mobile number provided above. Message frequency varies.
-            Message and data rates may apply. Reply <strong>STOP</strong> to opt out at any time,
-            or <strong>HELP</strong> for help.
-            <strong>Consent is not a condition of purchase.</strong>
+            Text messages are optional. You can submit this form without checking the box.
           </p>
           <label class="sms-checkbox-label">
             <input type="checkbox" id="smsConsent" name="sms_consent" />
-            I agree to receive SMS notifications from Stellar Intelligent Software Developers (a DBA of Apropos Group LLC) about inbound calls, leads, and account activity at the number above. Message and data rates may apply.
+            Yes, Stellar Intelligent Software Developers (a DBA of Apropos Group LLC) may send me text messages about my inquiry and consultation. Message frequency varies. Msg &amp; data rates may apply. Reply STOP to opt out or HELP for help. Consent is not a condition of purchase.
           </label>
           <div class="sms-meta">
             By checking this box you provide express written consent under TCPA.
@@ -290,7 +286,7 @@
 
     <footer>
       <div class="footer-inner">
-        <div>FlowDesk Pro Lead Management System &nbsp;·&nbsp; White Label Partnership</div>
+        <div>Stellar Lead Management System &nbsp;·&nbsp; White Label Partnership</div>
         <div class="footer-links"><a href="/dashboard">Dashboard</a><a href="/">Overview</a></div>
       </div>
     </footer>
@@ -317,11 +313,7 @@ const smsStampText   = $('smsStampText');
 
 // ── SMS consent state ──────────────────────────────────────────────────────
 const SMS_CONSENT_TEXT =
-  'I agree to receive SMS notifications from Stellar Intelligent Software Developers (a DBA of Apropos Group LLC) about inbound calls, ' +
-  'leads, and account activity at the mobile number provided above. ' +
-  'Message frequency varies. Message and data rates may apply. ' +
-  'Reply STOP to opt out at any time, or HELP for help. ' +
-  'Consent is not a condition of purchase.';
+  'Yes, Stellar Intelligent Software Developers (a DBA of Apropos Group LLC) may send me text messages about my inquiry and consultation. Message frequency varies. Msg & data rates may apply. Reply STOP to opt out or HELP for help. Consent is not a condition of purchase.';
 
 let smsConsentTimestamp = null;
 
@@ -371,7 +363,7 @@ form.addEventListener('submit', async (event) => {
 
   button.disabled = true;
   button.textContent = 'Building your dashboard...';
-  showNotice('Setting up your FlowDesk Pro dashboard...', '');
+  showNotice('Setting up your Stellar dashboard...', '');
 
   const smsConsented = bool('smsConsent');
   const mobileNumber = val('phone');

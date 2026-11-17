@@ -133,7 +133,7 @@ exports.handler = async (event) => {
   const businessName = safeString(body.business_name);
   const phone       = safeString(body.phone);
   const smsConsent  = asBoolean(body.sms_consent);
-  const demoSite    = safeString(body.demo_site, 'lead-management.aiflowdeskpro.com');
+  const demoSite    = safeString(body.demo_site, 'biaas.stellaruc.com');
 
   if (!firstName)    return json(400, { ok: false, error: 'First name is required' });
   if (!lastName)     return json(400, { ok: false, error: 'Last name is required' });
