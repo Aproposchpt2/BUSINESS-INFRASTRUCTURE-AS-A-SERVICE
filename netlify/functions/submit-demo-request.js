@@ -9,7 +9,6 @@
  *   1. Saves lead to Supabase lead_manager_records + demo_requests
  *   2. Sends internal notification to owner email
  *   3. Sends confirmation email to user
- *   4. If sms_consent=yes → sends Twilio SMS with compliant footer
  * Returns: { ok, lead_id, business_name }
  */
 
@@ -31,62 +30,6 @@ function asBoolean(value) {
   if (value === true || value === 'yes' || value === '1' || value === 1) return true;
   if (typeof value === 'string') return ['true','yes','y','on'].includes(value.toLowerCase().trim());
   return false;
-}
-
-function twilioRequest(accountSid, authToken, to, from, body) {
-  const auth = Buffer.from(`${accountSid}:${authToken}`).toString('base64');
-  const payload = new URLSearchParams({ To: to, From: from, Body: body }).toString();
-
-  return new Promise((resolve, reject) => {
-    const req = https.request({
-      hostname: 'api.twilio.com',
-      path: `/2010-04-01/Accounts/${accountSid}/Messages.json`,
-      method: 'POST',
-      headers: {
-        Authorization: `Basic ${auth}`,
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Content-Length': Buffer.byteLength(payload),
-      },
-    }, (res) => {
-      let data = '';
-      res.on('data', chunk => { data += chunk; });
-      res.on('end', () => {
-        try { resolve({ statusCode: res.statusCode, data: JSON.parse(data) }); }
-        catch { resolve({ statusCode: res.statusCode, data }); }
-      });
-    });
-    req.on('error', reject);
-    req.setTimeout(10000, () => req.destroy(new Error('Twilio request timed out')));
-    req.write(payload);
-    req.end();
-  });
-}
-
-const TWILIO_COMPLIANCE_FOOTER = '\nMsg frequency varies. Msg & data rates may apply. Reply STOP to opt out, HELP for help.';
-
-async function sendSms(to, body) {
-  const accountSid = process.env.TWILIO_ACCOUNT_SID;
-  const authToken  = process.env.TWILIO_AUTH_TOKEN;
-  const fromNumber = process.env.TWILIO_PHONE_NUMBER || '+17253305102';
-
-  if (!accountSid || !authToken) {
-    console.warn('[submit-demo-request] Twilio not configured — SMS skipped.');
-    return { skipped: true };
-  }
-
-  const fullBody = body + TWILIO_COMPLIANCE_FOOTER;
-
-  try {
-    const result = await twilioRequest(accountSid, authToken, to, fromNumber, fullBody);
-    if (result.statusCode >= 200 && result.statusCode < 300) {
-      return { sent: true, sid: result.data?.sid };
-    }
-    console.error('[submit-demo-request] Twilio error:', result.data);
-    return { sent: false, error: JSON.stringify(result.data) };
-  } catch (err) {
-    console.error('[submit-demo-request] Twilio exception:', err.message);
-    return { sent: false, error: err.message };
-  }
 }
 
 function buildOwnerEmailHtml({ firstName, lastName, email, businessName, phone, smsConsent, demoSite, leadId }) {
@@ -220,12 +163,7 @@ exports.handler = async (event) => {
     console.error('[submit-demo-request] User confirmation email failed:', err.message);
   }
 
-  // Send SMS if consented
-  if (smsConsent && phone) {
-    const smsBody = `Stellar Intelligent Software Developers: Hi ${firstName}, your Lead Manager demo is confirmed. Your ${businessName} branded dashboard is ready. Check your email for access details.`;
-    const smsResult = await sendSms(phone, smsBody);
-    console.log('[submit-demo-request] SMS result:', smsResult);
-  }
+  // This site sends no text messages: it is a feature offer, not a live demo line.
 
   return json(200, {
     ok: true,

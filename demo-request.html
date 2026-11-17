@@ -54,12 +54,6 @@
     textarea { resize: vertical; min-height: 100px; }
     .field-error { font-size: 0.78rem; color: #DC2626; margin-top: 5px; display: none; }
     .field-error.show { display: block; }
-    .sms-opt-in { background: #F8F9FA; border: 1px solid #E2E6EC; border-radius: 6px; padding: 14px 16px; margin-bottom: 20px; }
-    .sms-opt-in label { display: flex; align-items: flex-start; gap: 10px; cursor: pointer; }
-    .sms-opt-in input[type="checkbox"] { margin-top: 3px; flex-shrink: 0; width: 15px; height: 15px; accent-color: #1B3A6B; }
-    .sms-text { font-size: 0.82rem; color: #444444; line-height: 1.55; }
-    .sms-text a { color: #1B3A6B; }
-    .sms-note { font-size: 0.75rem; color: #666666; margin: 8px 0 0 25px; line-height: 1.5; }
     .submit-btn { width: 100%; padding: 14px; background: #1B3A6B; color: #ffffff; border: none; border-radius: 6px; font-family: 'Inter', system-ui, sans-serif; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: background 0.2s, transform 0.15s; }
     .submit-btn:hover:not(:disabled) { background: #B8860B; transform: translateY(-1px); }
     .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
@@ -144,14 +138,6 @@
             <textarea id="reason" name="reason" placeholder="Tell us about your business and what you're looking to automate..."></textarea>
           </div>
 
-          <div class="sms-opt-in">
-            <label>
-              <input type="checkbox" id="sms_consent" name="sms_consent" value="yes">
-              <span class="sms-text">Yes, Stellar Intelligent Software Developers (a DBA of Apropos Group LLC) may send me text messages about my inquiry and consultation. Message frequency varies. Msg &amp; data rates may apply. Reply STOP to opt out or HELP for help. Consent is not a condition of purchase. View our <a href="/privacy.html" target="_blank">Privacy Policy</a> and <a href="/terms.html" target="_blank">Terms &amp; Conditions</a>.</span>
-            </label>
-            <p class="sms-note">SMS consent is optional. You may still submit this form without checking this box. Standard message and data rates may apply.</p>
-          </div>
-
           <button type="submit" class="submit-btn" id="submitBtn">Request My Demo</button>
           <div class="form-general-error" id="generalError">Something went wrong. Please try again.</div>
         </form>
@@ -220,7 +206,6 @@
       business_name: document.getElementById('business_name').value.trim(),
       phone:         document.getElementById('phone').value.trim(),
       reason:        document.getElementById('reason').value.trim(),
-      sms_consent:   document.getElementById('sms_consent').checked ? 'yes' : 'no',
       demo_site:     'biaas.stellaruc.com',
     };
     try {

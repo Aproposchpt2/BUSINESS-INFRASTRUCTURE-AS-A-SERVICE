@@ -7,85 +7,6 @@
   <meta name="description" content="Fallback lead intake form for the Stellar Lead Manager." />
   <link rel="stylesheet" href="styles.css" />
   <style>
-    /* ── SMS Consent Card ── */
-    .sms-consent-card {
-      display: flex;
-      flex-direction: column;
-      border: 1px solid rgba(115,230,255,.38);
-      border-radius: 18px;
-      background: rgba(115,230,255,.05);
-      padding: 20px 22px;
-      gap: 14px;
-      margin-top: 28px;
-    }
-
-    .sms-card-header {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: var(--cyan);
-      font-size: .7rem;
-      font-weight: 900;
-      letter-spacing: .18em;
-      text-transform: uppercase;
-    }
-    .sms-card-header svg {
-      width: 16px; height: 16px;
-      flex-shrink: 0;
-      stroke: var(--cyan);
-    }
-
-    .sms-disclosure {
-      font-size: .88rem;
-      line-height: 1.75;
-      color: var(--muted);
-      border-left: 2px solid rgba(115,230,255,.3);
-      padding-left: 14px;
-    }
-
-    .sms-checkbox-label {
-      display: flex;
-      gap: 13px;
-      align-items: flex-start;
-      cursor: pointer;
-      color: var(--text);
-      font-size: .92rem;
-      font-weight: 400;
-      letter-spacing: 0;
-      text-transform: none;
-    }
-    .sms-checkbox-label input[type="checkbox"] {
-      width: 20px;
-      min-height: 20px;
-      margin-top: 2px;
-      accent-color: var(--cyan);
-      flex: 0 0 auto;
-      cursor: pointer;
-      border-radius: 5px;
-    }
-
-    .sms-meta {
-      font-size: .72rem;
-      color: var(--soft);
-      letter-spacing: .04em;
-    }
-    .sms-meta a { color: var(--cyan); text-decoration: none; }
-    .sms-meta a:hover { text-decoration: underline; }
-
-    .sms-consent-stamp {
-      display: none;
-      align-items: center;
-      gap: 8px;
-      font-size: .7rem;
-      color: var(--green);
-      letter-spacing: .08em;
-    }
-    .sms-consent-stamp.visible { display: flex; }
-    .sms-consent-stamp svg {
-      width: 14px; height: 14px;
-      stroke: var(--green);
-      flex-shrink: 0;
-    }
 
     /* ── Demo Preview Section ── */
     .demo-preview-section {
@@ -253,34 +174,6 @@
           </div>
           <div id="formNotice" class="notice" aria-live="polite"></div>
         </form>
-
-        <!-- ── SMS Notification Consent — always visible for A2P compliance ── -->
-        <div class="sms-consent-card" id="smsConsentCard" role="region" aria-label="SMS notification consent">
-          <div class="sms-card-header">
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-            </svg>
-            SMS Notification Consent
-          </div>
-          <p class="sms-disclosure">
-            Text messages are optional. You can submit this form without checking the box.
-          </p>
-          <label class="sms-checkbox-label">
-            <input type="checkbox" id="smsConsent" name="sms_consent" />
-            Yes, Stellar Intelligent Software Developers (a DBA of Apropos Group LLC) may send me text messages about my inquiry and consultation. Message frequency varies. Msg &amp; data rates may apply. Reply STOP to opt out or HELP for help. Consent is not a condition of purchase.
-          </label>
-          <div class="sms-meta">
-            By checking this box you provide express written consent under TCPA.
-            View our <a href="/privacy.html">Privacy Policy</a> and <a href="/terms.html">Terms &amp; Conditions</a>.
-          </div>
-          <div class="sms-consent-stamp" id="smsStamp">
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="20 6 9 17 4 12"/>
-            </svg>
-            <span id="smsStampText">Consent recorded</span>
-          </div>
-        </div>
-
       </section>
     </main>
 
@@ -306,29 +199,6 @@ const form      = $('leadForm');
 const notice    = $('formNotice');
 const button    = $('submitButton');
 const phoneInput     = $('phone');
-const smsCard        = $('smsConsentCard');
-const smsCheckbox    = $('smsConsent');
-const smsStamp       = $('smsStamp');
-const smsStampText   = $('smsStampText');
-
-// ── SMS consent state ──────────────────────────────────────────────────────
-const SMS_CONSENT_TEXT =
-  'Yes, Stellar Intelligent Software Developers (a DBA of Apropos Group LLC) may send me text messages about my inquiry and consultation. Message frequency varies. Msg & data rates may apply. Reply STOP to opt out or HELP for help. Consent is not a condition of purchase.';
-
-let smsConsentTimestamp = null;
-
-
-// Capture timestamp the moment the box is checked; clear on uncheck.
-smsCheckbox.addEventListener('change', () => {
-  if (smsCheckbox.checked) {
-    smsConsentTimestamp = new Date().toISOString();
-    smsStampText.textContent = `Consent recorded · ${new Date().toLocaleTimeString()}`;
-    smsStamp.classList.add('visible');
-  } else {
-    smsConsentTimestamp = null;
-    smsStamp.classList.remove('visible');
-  }
-});
 
 // ── URL query prefill ─────────────────────────────────────────────────────
 const params = new URLSearchParams(window.location.search);
@@ -365,7 +235,6 @@ form.addEventListener('submit', async (event) => {
   button.textContent = 'Building your dashboard...';
   showNotice('Setting up your Stellar dashboard...', '');
 
-  const smsConsented = bool('smsConsent');
   const mobileNumber = val('phone');
 
   const payload = {
@@ -388,16 +257,12 @@ form.addEventListener('submit', async (event) => {
     category:     'Demo Request',
     follow_up_needed: true,
     next_action:  'Review demo request and follow up with Lead Management System overview.',
-    sms_consent:           smsConsented,
-    sms_consent_phone:     smsConsented ? mobileNumber : null,
-    sms_consent_text:      smsConsented ? SMS_CONSENT_TEXT : null,
-    sms_consent_timestamp: smsConsented ? smsConsentTimestamp : null,
+    sms_consent:           false,
     metadata: {
       origin_site:           window.location.hostname,
       lead_source_type:      'demo_request',
       source_url:            window.location.href,
-      sms_consent:           smsConsented,
-      sms_consent_timestamp: smsConsentTimestamp,
+      sms_consent:           false,
     }
   };
 
